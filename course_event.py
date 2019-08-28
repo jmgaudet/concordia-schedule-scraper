@@ -8,6 +8,7 @@ regex = re.compile(r'([a-zA-Z]{2,4}) (.*) - (.*)')
 
 
 class ScheduledCourse:
+    """A class used to organize and parse the given course information from a dict to a usable object"""
     def __init__(self, name, number, section, component, times, room, instructor, start_end):
         self.component = component
         title = name.split(' -')
@@ -42,6 +43,7 @@ class ScheduledCourse:
         return event
 
     def __str__(self):
+        """Allows for ease of reading of the object"""
         return 'Name: ' + self.name + \
                '\nDescription: ' + self.description + \
                '\nComponent: ' + self.component + \
