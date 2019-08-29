@@ -1,12 +1,14 @@
+import json
+import time
+
+import icalendar
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
-import time
-import json
-import icalendar
+
 from course_event import ScheduledCourse
 
 courses = []
-sleep_scale = 5     # '5' is the recommended average amount of time needed to wait
+sleep_scale = 5  # '5' is the recommended average amount of time needed to wait
 browser = webdriver.Safari()
 
 
@@ -81,7 +83,7 @@ def produce_calendar():
 
 if __name__ == '__main__':
     login()
-    time.sleep(sleep_scale)     # time.sleep() is necessary, since myConcordia takes a while to load
+    time.sleep(sleep_scale)  # time.sleep() is necessary, since myConcordia takes a while to load
     browser_collection()
     create_txt_reference()
     produce_calendar()
