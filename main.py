@@ -81,9 +81,16 @@ def produce_calendar():
         f.write(cal.to_ical())
 
 
+def google_calendar():
+    for course in courses:
+        google_event = ScheduledCourse(**course)
+        google_event.create_google_event()
+
+
 if __name__ == '__main__':
     login()
     time.sleep(sleep_scale)  # time.sleep() is necessary, since myConcordia takes a while to load
     browser_collection()
     create_txt_reference()
-    produce_calendar()
+    # produce_calendar()
+    google_calendar()
