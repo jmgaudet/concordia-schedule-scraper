@@ -75,7 +75,6 @@ def produce_ical():
     cal = icalendar.Calendar()
     for course in courses:
         event = ScheduledCourse(**course)
-        # print(event)
         cal.add_component(event.create_ical_event())
     with open('output.ics', 'wb') as f:
         f.write(cal.to_ical())
@@ -92,5 +91,5 @@ if __name__ == '__main__':
     time.sleep(sleep_scale)  # time.sleep() is necessary, since myConcordia takes a while to load
     browser_collection()
     create_txt_reference()
-    # produce_ical()
+    produce_ical()
     produce_google_cal()

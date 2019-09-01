@@ -37,10 +37,7 @@ class ScheduledCourse:
         for x in range(int(len(days) / 2)):
             fdays.append(days[x * 2:x * 2 + 2])
         self.repeat_rule = {'freq': 'weekly', 'until': until, 'byday': fdays}
-
-        google_end_day = datetime.datetime.strptime(end_day, "%d/%m/%Y")
-        s = str(google_end_day)[:10] + str(self.end_time[11:16]) + str(00)
-        self.google_repeat_str = re.sub(r'\W+', '', s)  # 20191202000000
+        self.google_until = re.sub(r'\W+', '', until.isoformat())
 
     def create_ical_event(self):
         event = icalendar.Event()
@@ -55,20 +52,15 @@ class ScheduledCourse:
     def create_google_event(self):
         service = get_calendar_service()
         iana_timezone = 'America/Montreal'
-        # print("start_time: " + str(self.start_time))
-        # print("start_time.isoformat: " + str(self.start_time.isoformat())[:-6])
-        # print("end_time: " + str(self.end_time))
-        # print("RRULE:FREQ=WEEKLY;UNTIL=" + self.google_repeat_str)
         service.events().insert(calendarId='primary',
                                 body={
                                     'summary': u'{}'.format(self.name),
                                     'description': self.description,
                                     'location': self.room,
-                                    'start': {'dateTime': self.start_period.isoformat()[:-6] + "Z",
+                                    'start': {'dateTime': self.start_period.isoformat(),
                                               'timeZone': iana_timezone},
-                                    'end': {'dateTime': self.end_period.isoformat()[:-6] + "Z", 'timeZone': iana_timezone},
-                                    "recurrence": ["RRULE:FREQ=WEEKLY;UNTIL=" + self.google_repeat_str[:8] + "T" + self.google_repeat_str[8:] + "Z", ]
-
+                                    'end': {'dateTime': self.end_period.isoformat(), 'timeZone': iana_timezone},
+                                    "recurrence": ["RRULE:FREQ=WEEKLY;UNTIL=" + self.google_until[:-4] + "Z", ]     # 20191202T2355000500
                                 }
                                 ).execute()
 
