@@ -53,7 +53,6 @@ def browser_collection():
     get_terms = lambda: browser.find_element_by_css_selector('.PSLEVEL2GRID').find_elements_by_tag_name('tr')[1:]
     terms = get_terms()
     num_terms = len(terms)
-
     for _ in range(num_terms):
         browser.get(url)
         terms = get_terms()
@@ -70,18 +69,19 @@ def create_txt_reference():
             text_file.write("%s\n" % item)
 
 
-def produce_calendar():
+def produce_ical():
     """Using the class ScheduledCourse, this method organizes the gathered list of dictionaries,
     and writes them to an executable .ics file"""
     cal = icalendar.Calendar()
     for course in courses:
         event = ScheduledCourse(**course)
+        # print(event)
         cal.add_component(event.create_ical_event())
     with open('output.ics', 'wb') as f:
         f.write(cal.to_ical())
 
 
-def google_calendar():
+def produce_google_cal():
     for course in courses:
         google_event = ScheduledCourse(**course)
         google_event.create_google_event()
@@ -92,5 +92,5 @@ if __name__ == '__main__':
     time.sleep(sleep_scale)  # time.sleep() is necessary, since myConcordia takes a while to load
     browser_collection()
     create_txt_reference()
-    # produce_calendar()
-    google_calendar()
+    # produce_ical()
+    produce_google_cal()
