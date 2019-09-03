@@ -6,3 +6,6 @@
 *.ics
 *.txt
 *.pickle
+*.log
+sandbox.py
+passport.json

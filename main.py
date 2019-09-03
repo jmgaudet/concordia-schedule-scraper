@@ -8,13 +8,13 @@ from selenium.common.exceptions import NoSuchElementException
 from course_event import ScheduledCourse
 
 courses = []
-sleep_scale = 5  # '5' is the recommended average amount of time needed to wait
+sleep_scale = 5  # MUST BE 3 OR GREATER. '5' is the recommended average amount of time needed to wait
 browser = webdriver.Safari()
 
 
 def login():
     """Using the info from the json file, opens the Safari browser and begins navigation"""
-    with open("passport.json", "r") as read_file:
+    with open('passport.json', 'r') as read_file:
         data = json.load(read_file)
     browser.get('https://my.concordia.ca/psp/upprpr9/?cmd=login&languageCd=ENG&')
     browser.maximize_window()
@@ -58,7 +58,6 @@ def browser_collection():
         terms = get_terms()
         get_term_info(terms[num_terms - 1])
         num_terms -= 1
-
     browser.close()
 
 
@@ -92,4 +91,4 @@ if __name__ == '__main__':
     browser_collection()
     create_txt_reference()
     produce_ical()
-    produce_google_cal()
+    # produce_google_cal()

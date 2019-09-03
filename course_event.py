@@ -12,6 +12,7 @@ regex = re.compile(r'([a-zA-Z]{2,4}) (.*) - (.*)')
 
 class ScheduledCourse:
     """A class used to organize and parse the given course information from a dict to a usable object"""
+
     def __init__(self, name, number, section, component, times, room, instructor, start_end):
         self.component = component
         title = name.split(' -')
@@ -32,11 +33,11 @@ class ScheduledCourse:
         while calendar.day_name[self.start_period.weekday()].lower()[0:2] != first_day:
             self.start_period += datetime.timedelta(days=1)
         self.end_period = parser.parse('{} {} EDT'.format(self.start_period.date().isoformat(), endt))
-        until = parser.parse('{} {} EDT'.format(end_day_format, "11:55PM"))    # This is the endtime of the LAST class
-        fdays = []
+        until = parser.parse('{} {} EDT'.format(end_day_format, "11:55PM"))  # This is the endtime of the LAST class
+        days_list = []
         for x in range(int(len(days) / 2)):
-            fdays.append(days[x * 2:x * 2 + 2])
-        self.repeat_rule = {'freq': 'weekly', 'until': until, 'byday': fdays}
+            days_list.append(days[x * 2:x * 2 + 2])
+        self.repeat_rule = {'freq': 'weekly', 'until': until, 'byday': days_list}
         self.google_until = re.sub(r'\W+', '', until.isoformat())
 
     def create_ical_event(self):
@@ -60,7 +61,8 @@ class ScheduledCourse:
                                     'start': {'dateTime': self.start_period.isoformat(),
                                               'timeZone': iana_timezone},
                                     'end': {'dateTime': self.end_period.isoformat(), 'timeZone': iana_timezone},
-                                    "recurrence": ["RRULE:FREQ=WEEKLY;UNTIL=" + self.google_until[:-4] + "Z", ]     # 20191202T2355000500
+                                    "recurrence": ["RRULE:FREQ=WEEKLY;UNTIL=" + self.google_until[:-4] + "Z", ]
+                                    # 20191202T2355000500
                                 }
                                 ).execute()
 
