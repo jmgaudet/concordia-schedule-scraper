@@ -1,7 +1,9 @@
 # concordia-schedule-scraper
 ### Summary:
-Using Python and Selenium, this program takes a myConcordia login, navigates through the user's class schedule, scrapes the info, and creates a .ics file.
+Using Python and selenium, this program takes a myConcordia login, navigates through the user's class schedule, scrapes the info, and creates a .ics file.
 This file can then be executed to directly populate Calendar (on Mac) with the user's entire class schedule.
+
+The program also exports the class schedule to Google Calendar. Should you not wish to add to Google cal, simply comment out the line `produce_google_cal()` found at the bottom inside `main.py`.
 
 ### Requirements:
 * Python 3.7
