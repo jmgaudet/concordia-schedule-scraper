@@ -1,5 +1,6 @@
 import json
 import time
+from sys import argv
 
 import icalendar
 from selenium import webdriver
@@ -9,7 +10,17 @@ from course_event import ScheduledCourse
 
 courses = []
 sleep_scale = 5  # MUST BE 3 OR GREATER. '5' is the recommended average amount of time needed to wait
-browser = webdriver.Safari()
+b = argv[1].lower()
+if b == 'safari':
+    browser = webdriver.Safari()
+elif b == 'firefox':
+    browser = webdriver.Firefox()
+elif b == 'chrome':
+    browser = webdriver.Chrome()
+elif b != 'safari' or 'firefox' or 'chrome':
+    print('ERROR: Bad argument.\nShould have typed either \"chrome\", \"safari\", or \"firefox\" as an argument here:'
+          '\n\"$ python3 main.py ______\"\nTry again')
+    exit(0)
 
 
 def login():
@@ -17,7 +28,7 @@ def login():
     with open('passport.json', 'r') as read_file:
         data = json.load(read_file)
     browser.get('https://my.concordia.ca/psp/upprpr9/?cmd=login&languageCd=ENG&')
-    browser.maximize_window()
+    # browser.maximize_window()
     browser.find_element_by_id('userid').send_keys(data['username'])
     browser.find_element_by_id('pwd').send_keys(data['password'])
     browser.find_element_by_class_name('form_button_submit').click()
@@ -64,6 +75,7 @@ def browser_collection():
 def create_txt_reference():
     """Creates a txt file in order to have a clearer view of what exactly has been scraped"""
     with open('courses.txt', 'w') as text_file:
+        text_file.write(time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
         for item in courses:
             text_file.write("%s\n" % item)
 
@@ -92,3 +104,4 @@ if __name__ == '__main__':
     create_txt_reference()
     produce_ical()
     # produce_google_cal()
+    print('\"output.ics\" file successfully created')
