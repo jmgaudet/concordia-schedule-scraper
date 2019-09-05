@@ -94,6 +94,7 @@ def produce_ical():
 def produce_google_cal():
     for course in courses:
         google_event = ScheduledCourse(**course)
+        print(google_event)
         google_event.create_google_event()
 
 
@@ -103,5 +104,5 @@ if __name__ == '__main__':
     browser_collection()
     create_txt_reference()
     produce_ical()
-    # produce_google_cal()
+    produce_google_cal()
     print('\"output.ics\" file successfully created')

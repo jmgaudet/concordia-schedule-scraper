@@ -38,6 +38,7 @@ class ScheduledCourse:
         for x in range(int(len(days) / 2)):
             days_list.append(days[x * 2:x * 2 + 2])
         self.repeat_rule = {'freq': 'weekly', 'until': until, 'byday': days_list}
+        self.google_days_list = ','.join(days_list)
         self.google_until = re.sub(r'\W+', '', until.isoformat())
 
     def create_ical_event(self):
@@ -61,7 +62,7 @@ class ScheduledCourse:
                                     'start': {'dateTime': self.start_period.isoformat(),
                                               'timeZone': iana_timezone},
                                     'end': {'dateTime': self.end_period.isoformat(), 'timeZone': iana_timezone},
-                                    "recurrence": ["RRULE:FREQ=WEEKLY;UNTIL=" + self.google_until[:-4] + "Z", ]
+                                    "recurrence": ["RRULE:FREQ=WEEKLY;BYDAY=" + self.google_days_list + ";UNTIL=" + self.google_until[:-4] + "Z", ]
                                     # 20191202T2355000500
                                 }
                                 ).execute()
@@ -71,6 +72,8 @@ class ScheduledCourse:
         return 'Name: ' + self.name + \
                '\nDescription: ' + self.description + \
                '\nComponent: ' + self.component + \
-               '\nTimes ' + self.times + \
+               '\nTimes: ' + self.times + \
+               '\nstart_period: ' + self.start_period.isoformat() + \
+               '\nend_period: ' + self.end_period.isoformat() + \
                '\nLocation: ' + self.room + \
                '\nRepeat Rule: ' + str(self.repeat_rule)
