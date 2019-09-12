@@ -22,7 +22,7 @@ If you don't have brew, I suggest you [get brew](https://brew.sh).
 5. For Chrome usage, you'll need __chromedriver__. It can also be installed by typing `$ brew install chromedriver`, and following any necessary subsequent actions.
 6. In terminal, nagivate inside the folder "concordia-schedule-scraper", and type: `$ python3 main.py _______`, where you indicate your choice of browser.
 
-##Examples:
+## Examples:
 
 `python3 main.py chrome`
 
