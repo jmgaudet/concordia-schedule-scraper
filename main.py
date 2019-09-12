@@ -89,7 +89,7 @@ def produce_calendars():
     for course in courses:
         event = ScheduledCourse(**course)
         cal.add_component(event.create_ical_event())
-        if argv[2].lower is 'google':
+        if argv[2].lower() == 'google':
             event.create_google_event()
     with open('output.ics', 'wb') as f:
         f.write(cal.to_ical())
