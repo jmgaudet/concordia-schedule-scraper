@@ -54,7 +54,7 @@ class ScheduledCourse:
     def create_google_event(self):
         service = get_calendar_service()
         iana_timezone = 'America/Montreal'
-        service.events().insert(calendarId='t6m6l4ea2mmbvgo893rsr0q4vs@group.calendar.google.com',
+        service.events().insert(calendarId='primary',
                                 body={
                                     'summary': u'{}'.format(self.name),
                                     'description': self.description,

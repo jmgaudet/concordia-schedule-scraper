@@ -10,16 +10,21 @@ from course_event import ScheduledCourse
 
 courses = []
 sleep_scale = 5  # MUST BE 3 OR GREATER. '5' is the recommended average amount of time needed to wait
-b = argv[1].lower()
-if b == 'safari':
-    browser = webdriver.Safari()
-elif b == 'firefox':
-    browser = webdriver.Firefox()
-elif b == 'chrome':
-    browser = webdriver.Chrome()
-elif b != 'safari' or 'firefox' or 'chrome':
-    print('ERROR: Bad argument.\nShould have typed either \"chrome\", \"safari\", or \"firefox\" as an argument here:'
-          '\n\"$ python3 main.py ______\"\nTry again')
+
+try:
+    b = argv[1].lower()
+    if b == 'safari':
+        browser = webdriver.Safari()
+    elif b == 'firefox':
+        browser = webdriver.Firefox()
+    elif b == 'chrome':
+        browser = webdriver.Chrome()
+    elif b != 'safari' or 'firefox' or 'chrome':
+        raise ValueError(
+            'ERROR: Bad argument.\nShould have typed either \"chrome\", \"safari\", or \"firefox\" as an argument here:\n'
+            '\"$ python3 main.py ______\"\nTry again.')
+except ValueError as err:
+    print(err.args[0])
     exit(0)
 
 
@@ -84,7 +89,8 @@ def produce_calendars():
     for course in courses:
         event = ScheduledCourse(**course)
         cal.add_component(event.create_ical_event())
-        event.create_google_event()
+        if argv[2].lower is 'google':
+            event.create_google_event()
     with open('output.ics', 'wb') as f:
         f.write(cal.to_ical())
 

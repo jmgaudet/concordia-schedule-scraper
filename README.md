@@ -3,7 +3,9 @@
 Using Python and selenium, this program takes a myConcordia login, navigates through the user's class schedule, scrapes the info, and creates a .ics file.
 This file can then be executed to directly populate Calendar (on Mac) with the user's entire class schedule.
 
-The program also exports the class schedule to Google Calendar. Should you not wish to add to Google cal, simply comment out the line `produce_google_cal()` found at the bottom inside `main.py`.
+The program can also export the class schedule to __Google Calendar__. 
+To export to Google Cal, simply add "google" to the terminal command (see examples below).
+Should you not wish to add to Google cal, simply do not add the word 'google' to the terminal command.
 
 ## Requirements:
 * Python 3.7
@@ -20,8 +22,10 @@ If you don't have brew, I suggest you [get brew](https://brew.sh).
 5. For Chrome usage, you'll need __chromedriver__. It can also be installed by typing `$ brew install chromedriver`, and following any necessary subsequent actions.
 6. In terminal, nagivate inside the folder "concordia-schedule-scraper", and type: `$ python3 main.py _______`, where you indicate your choice of browser.
 
-Example:
+##Examples:
+
 `python3 main.py chrome`
 
+`python3 main.py safari google`
+
 Afterwards, a .ics will have been created in the same folder. Simply double-click it and choose which calendar to add the schedule to on iCal.
-If some error message appeared, perhaps Google cal was not configured properly/completely. The line `produce_google_cal()` inside of `__main__` can be commented out to skip adding the info to Google calendar.
