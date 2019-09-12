@@ -11,7 +11,7 @@ regex = re.compile(r'([a-zA-Z]{2,4}) (.*) - (.*)')
 
 
 class ScheduledCourse:
-    """A class used to organize and parse the given course information from a dict to a usable object"""
+    """A class used to parse the given course information from a dict to a usable object"""
 
     def __init__(self, name, number, section, component, times, room, instructor, start_end):
         self.component = component
@@ -54,7 +54,7 @@ class ScheduledCourse:
     def create_google_event(self):
         service = get_calendar_service()
         iana_timezone = 'America/Montreal'
-        service.events().insert(calendarId='primary',
+        service.events().insert(calendarId='t6m6l4ea2mmbvgo893rsr0q4vs@group.calendar.google.com',
                                 body={
                                     'summary': u'{}'.format(self.name),
                                     'description': self.description,
@@ -62,13 +62,12 @@ class ScheduledCourse:
                                     'start': {'dateTime': self.start_period.isoformat(),
                                               'timeZone': iana_timezone},
                                     'end': {'dateTime': self.end_period.isoformat(), 'timeZone': iana_timezone},
-                                    "recurrence": ["RRULE:FREQ=WEEKLY;BYDAY=" + self.google_days_list + ";UNTIL=" + self.google_until[:-4] + "Z", ]
-                                    # 20191202T2355000500
+                                    "recurrence": [
+                                        "RRULE:FREQ=WEEKLY;BYDAY=" + self.google_days_list + ";UNTIL=" + self.google_until[:-4] + "Z", ]
                                 }
                                 ).execute()
 
     def __str__(self):
-        """Allows for ease of reading (debugging) of the object"""
         return 'Name: ' + self.name + \
                '\nDescription: ' + self.description + \
                '\nComponent: ' + self.component + \
