@@ -12,14 +12,18 @@ courses = []
 sleep_scale = 5  # MUST BE 3 OR GREATER. '5' is the recommended average amount of time needed to wait
 
 try:
-    b = argv[1].lower()
+    if len(argv) > 1:
+        b = argv[1].lower()
+    else:
+        b = 'Null_Argument'
+
     if b == 'safari':
         browser = webdriver.Safari()
     elif b == 'firefox':
         browser = webdriver.Firefox()
     elif b == 'chrome':
         browser = webdriver.Chrome()
-    elif b != 'safari' or 'firefox' or 'chrome':
+    else:
         raise ValueError(
             'ERROR: Bad argument.\nShould have typed either \"chrome\", \"safari\", or \"firefox\" as an argument here:\n'
             '\"$ python3 main.py ______\"\nTry again.')
@@ -86,13 +90,19 @@ def create_txt_reference():
 
 def produce_calendars():
     cal = icalendar.Calendar()
+    if len(argv) > 2:   # Checking if the user wants to export the calendar details to their Google Cal
+        a = argv[2].lower()
+    else:
+        a = 'no_google'
+    # Loop thru each course in the list courses
     for course in courses:
         event = ScheduledCourse(**course)
         cal.add_component(event.create_ical_event())
-        if argv[2].lower() == 'google':
+        if a == 'google':
             event.create_google_event()
     with open('output.ics', 'wb') as f:
         f.write(cal.to_ical())
+    print('\"output.ics\" file successfully created')
 
 
 if __name__ == '__main__':
@@ -101,4 +111,3 @@ if __name__ == '__main__':
     browser_collection()
     create_txt_reference()
     produce_calendars()
-    print('\"output.ics\" file successfully created')
